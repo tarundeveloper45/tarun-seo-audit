@@ -23,6 +23,27 @@ const server = http.createServer(async (req, res) => {
     return res.end();
   }
 
+  const origin = process.env.SITE_URL || `${req.headers['x-forwarded-proto'] || 'http'}://${req.headers['x-forwarded-host'] || req.headers.host}`;
+
+  if (u.pathname === '/robots.txt') {
+    res.writeHead(200, { 'content-type': 'text/plain' });
+    return res.end(`User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: ${origin}/sitemap.xml
+`);
+  }
+  if (u.pathname === '/sitemap.xml') {
+    res.writeHead(200, { 'content-type': 'application/xml' });
+    return res.end(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${origin}/</loc><lastmod>${new Date().toISOString().slice(0, 10)}</lastmod><changefreq>monthly</changefreq><priority>1.0</priority></url></urlset>`);
+  }
+  if (u.pathname === '/' || u.pathname === '/index.html') {
+    res.writeHead(200, { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=300' });
+    return res.end(fs.readFileSync(path.join(PUBLIC, 'index.html'), 'utf8').replaceAll('{{ORIGIN}}', origin));
+  }
+
   // static files
   let file = path.join(PUBLIC, u.pathname === '/' ? 'index.html' : u.pathname);
   if (!file.startsWith(PUBLIC) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) { res.writeHead(404); return res.end('Not found'); }

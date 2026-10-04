@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SiteScope – Website SEO & Tech Audit</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--ink:#14161f;--mut:#667085;--line:#e4e7ee;--pri:#4f46e5;--pri2:#7c3aed;--pass:#16a34a;--warn:#d97706;--fail:#dc2626;--info:#2563eb;--passbg:#e8f7ee;--warnbg:#fdf3e1;--failbg:#fde9e9;--infobg:#e7effd;--code:#f1f3f9}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0e1017;--card:#171a24;--ink:#e9ecf5;--mut:#9aa3b8;--line:#272b39;--passbg:#12301f;--warnbg:#3a2a0c;--failbg:#3d1618;--infobg:#142a4d;--code:#1f2330}}
+:root[data-theme=dark]{--bg:#0e1017;--card:#171a24;--ink:#e9ecf5;--mut:#9aa3b8;--line:#272b39;--passbg:#12301f;--warnbg:#3a2a0c;--failbg:#3d1618;--infobg:#142a4d;--code:#1f2330}
+*{box-sizing:border-box}body{margin:0;font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+header.hero{background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;padding:36px 0 54px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.logo{font-weight:800;font-size:20px;letter-spacing:-.3px}
+.btn-ghost{background:rgba(255,255,255,.16);color:#fff;border:0;border-radius:8px;padding:6px 12px;cursor:pointer;font:inherit;font-size:13px}
+h1{font-size:clamp(24px,4vw,38px);line-height:1.15;margin:26px 0 8px;letter-spacing:-.8px}
+.sub{opacity:.9;max-width:640px;margin:0 0 22px}
+form.search{display:flex;gap:8px;background:#fff;padding:6px;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.2);max-width:760px}
+form.search input{flex:1;border:0;outline:0;font:inherit;font-size:16px;padding:12px 14px;background:transparent;color:#14161f;min-width:0}
+form.search button{background:var(--pri);color:#fff;border:0;border-radius:10px;padding:0 24px;font:inherit;font-weight:600;cursor:pointer;white-space:nowrap}
+form.search button:disabled{opacity:.6;cursor:wait}
+.opts{margin-top:10px;font-size:13px;opacity:.95}.opts label{cursor:pointer}
+main{margin-top:-28px;padding-bottom:60px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
+.progress{display:none;text-align:center;padding:36px}
+.spinner{width:34px;height:34px;border:4px solid var(--line);border-top-color:var(--pri);border-radius:50%;margin:0 auto 12px;animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.err{display:none;background:var(--failbg);color:var(--fail);border-color:var(--fail)}
+#report{display:none}
+.bar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px}
+.tabs{display:flex;gap:4px;overflow-x:auto;border-bottom:1px solid var(--line);margin-bottom:16px;scrollbar-width:thin}
+.tab{background:none;border:0;border-bottom:3px solid transparent;padding:10px 14px;font:inherit;color:var(--mut);cursor:pointer;white-space:nowrap;font-weight:600}
+.tab.on{color:var(--pri);border-color:var(--pri)}
+.tab .n{background:var(--failbg);color:var(--fail);border-radius:99px;font-size:11px;padding:1px 7px;margin-left:4px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.seg button{border:0;background:var(--card);color:var(--mut);padding:7px 14px;font:inherit;font-size:13px;cursor:pointer}
+.seg button.on{background:var(--pri);color:#fff}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:9px;padding:7px 14px;font:inherit;font-size:13px;cursor:pointer}
+.grid{display:grid;gap:14px}.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}.g4{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.gauges{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}
+.gauge{text-align:center}.gauge svg{width:92px;height:92px}.gauge .lbl{font-size:12.5px;color:var(--mut);margin-top:2px;font-weight:600}
+.gauge.big svg{width:140px;height:140px}
+.stat{background:var(--code);border-radius:10px;padding:12px}.stat b{display:block;font-size:20px}.stat span{font-size:12px;color:var(--mut)}
+h2{margin:0 0 4px;font-size:18px}h3{margin:18px 0 8px;font-size:15px}
+.mut{color:var(--mut)}.small{font-size:13px}
+.chk{border:1px solid var(--line);border-left-width:4px;border-radius:10px;padding:12px 14px;margin-bottom:10px;background:var(--card)}
+.chk.pass{border-left-color:var(--pass)}.chk.warn{border-left-color:var(--warn)}.chk.fail{border-left-color:var(--fail)}.chk.info{border-left-color:var(--info)}
+.chk .t{display:flex;gap:8px;align-items:flex-start;font-weight:600}
+.pill{font-size:11px;font-weight:700;text-transform:uppercase;border-radius:6px;padding:2px 7px;flex:none;margin-top:2px}
+.pill.pass{background:var(--passbg);color:var(--pass)}.pill.warn{background:var(--warnbg);color:var(--warn)}.pill.fail{background:var(--failbg);color:var(--fail)}.pill.info{background:var(--infobg);color:var(--info)}
+.pill.High{background:var(--failbg);color:var(--fail)}.pill.Medium{background:var(--warnbg);color:var(--warn)}.pill.Low{background:var(--infobg);color:var(--info)}
+.chk p{margin:6px 0 0}.fix{background:var(--code);border-radius:8px;padding:8px 10px;margin-top:8px;font-size:14px;white-space:pre-wrap}
+.fix b{color:var(--pri)}
+pre.detail{background:var(--code);border-radius:8px;padding:8px 10px;margin:8px 0 0;font-size:12.5px;overflow:auto;white-space:pre-wrap;word-break:break-all}
+.tech{display:flex;flex-wrap:wrap;gap:8px}.chip{background:var(--code);border:1px solid var(--line);border-radius:99px;padding:5px 12px;font-size:13px;font-weight:600}.chip small{color:var(--mut);font-weight:400}
+.built{background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;border-radius:14px;padding:20px}.built .k{opacity:.85;font-size:12px;text-transform:uppercase;letter-spacing:.8px}.built .v{font-size:24px;font-weight:800;margin-top:2px}
+.sw{display:flex;flex-wrap:wrap;gap:8px}.swatch{width:74px;font-size:11px;text-align:center}.swatch i{display:block;height:42px;border-radius:8px;border:1px solid var(--line);margin-bottom:3px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}td,th{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left}
+.shot{max-width:260px;border-radius:12px;border:1px solid var(--line)}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.filters button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:4px 12px;font:inherit;font-size:13px;cursor:pointer}.filters button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+body.simple .tech-only{display:none}
+.meter{height:8px;background:var(--code);border-radius:99px;overflow:hidden;margin-top:6px}.meter i{display:block;height:100%}
+.serp{font-family:arial,sans-serif}.serp .u{color:#1a7f37;font-size:13px}.serp .tt{color:#1a0dab;font-size:19px}.serp .ds{color:#4d5156;font-size:13.5px}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .serp .tt{color:#8ab4f8}:root:not([data-theme=light]) .serp .ds{color:#bdc1c6}}
+@media print{header.hero,.bar,.tabs,form,.filters{display:none!important}main{margin:0}.pane{display:block!important}.card{break-inside:avoid}body{background:#fff}}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+  <div class="top"><div class="logo">🔍 SiteScope</div><button class="btn-ghost" id="theme">🌓 Theme</button></div>
+  <h1>Paste any website URL.<br>Get the full SEO, tech &amp; UI audit.</h1>
+  <p class="sub">Finds out what the site is built on, runs a technical + on-page SEO audit, reviews UI/UX and accessibility, and gives you a prioritised fix list.</p>
+  <form class="search" id="form"><input id="url" type="text" placeholder="example.com or https://example.com/page" autocomplete="off" autofocus required><button id="go">Analyze</button></form>
+  <div class="opts"><label><input type="checkbox" id="psi" checked> Include Google PageSpeed / Core Web Vitals (adds ~20s)</label></div>
+</div></header>
+
+<main class="wrap">
+  <div class="card progress" id="progress"><div class="spinner"></div><div id="ptext">Starting…</div></div>
+  <div class="card err" id="err"></div>
+
+  <div id="report">
+    <div class="bar">
+      <div><b id="rUrl"></b><div class="mut small" id="rMeta"></div></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <div class="seg" id="viewSeg"><button data-v="simple" class="on">Simple view</button><button data-v="tech">Technical view</button></div>
+        <button class="btn" id="dlJson">⬇ JSON</button><button class="btn" id="dlMd">⬇ Markdown</button><button class="btn" id="print">🖨 Print / PDF</button>
+      </div>
+    </div>
+    <div class="mut small" style="margin:-4px 0 10px">Audit report by <b>Tarun Developer</b> · SiteScope</div>
+    <div class="tabs" id="tabs"></div>
+    <div id="panes"></div>
+  </div>
+</main>
+<footer class="wrap" style="text-align:center;padding:10px 16px 40px;color:var(--mut);font-size:13px">Report generated by <b>SiteScope</b> · Developed by <b>Tarun Developer</b></footer>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const col = (n) => (n >= 80 ? 'var(--pass)' : n >= 50 ? 'var(--warn)' : 'var(--fail)');
+let R = null, es = null;
+
+// theme
+$('#theme').onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme:dark)').matches; r.dataset.theme = dark ? 'light' : 'dark'; };
+
+// run
+$('#form').onsubmit = (e) => {
+  e.preventDefault();
+  const url = $('#url').value.trim(); if (!url) return;
+  if (es) es.close();
+  $('#report').style.display = 'none'; $('#err').style.display = 'none'; $('#progress').style.display = 'block';
+  $('#ptext').textContent = 'Starting…'; $('#go').disabled = true;
+  es = new EventSource('/api/analyze?url=' + encodeURIComponent(url) + '&psi=' + ($('#psi').checked ? 1 : 0));
+  const done = () => { es.close(); $('#go').disabled = false; $('#progress').style.display = 'none'; };
+  es.addEventListener('progress', (ev) => { $('#ptext').textContent = JSON.parse(ev.data); });
+  es.addEventListener('result', (ev) => { done(); R = JSON.parse(ev.data); render(R); });
+  es.addEventListener('failure', (ev) => { done(); $('#err').textContent = '⚠ ' + JSON.parse(ev.data); $('#err').style.display = 'block'; });
+  es.onerror = () => { if ($('#go').disabled) { done(); $('#err').textContent = '⚠ Connection to the analyzer was lost. Is the server running?'; $('#err').style.display = 'block'; } };
+};
+
+function gauge(score, label, big) {
+  const r = 42, c = 2 * Math.PI * r, v = score == null ? 0 : score;
+  return `<div class="gauge ${big ? 'big' : ''}"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="${r}" fill="none" stroke="var(--line)" stroke-width="9"/><circle cx="50" cy="50" r="${r}" fill="none" stroke="${col(v)}" stroke-width="9" stroke-linecap="round" stroke-dasharray="${c * v / 100} ${c}" transform="rotate(-90 50 50)"/><text x="50" y="57" text-anchor="middle" font-size="24" font-weight="800" fill="var(--ink)">${score ?? '–'}</text></svg><div class="lbl">${esc(label)}</div></div>`;
+}
+
+function chk(c, showCat) {
+  return `<div class="chk ${c.status}" data-st="${c.status}"><div class="t"><span class="pill ${c.status}">${c.status === 'pass' ? '✓ Good' : c.status === 'warn' ? 'Improve' : c.status === 'fail' ? '✗ Fix' : 'Info'}</span><span>${esc(c.title)}${showCat ? ` <span class="mut small">· ${esc(c.category)}</span>` : ''}</span></div>
+  ${c.why ? `<p class="mut small">${esc(c.why)}</p>` : ''}
+  ${c.detail ? `<pre class="detail tech-only">${esc(c.detail)}</pre>` : ''}
+  ${c.fix && c.status !== 'pass' ? `<div class="fix"><b>How to fix:</b> ${esc(c.fix)}</div>` : ''}</div>`;
+}
+
+function checkList(cat) {
+  const list = R.checks.filter((c) => c.category === cat);
+  const order = { fail: 0, warn: 1, info: 2, pass: 3 };
+  list.sort((a, b) => order[a.status] - order[b.status] || b.w - a.w);
+  const cnt = (s) => list.filter((c) => c.status === s).length;
+  return `<div class="filters" data-f><button class="on" data-s="all">All (${list.length})</button><button data-s="fail">✗ Fix (${cnt('fail')})</button><button data-s="warn">Improve (${cnt('warn')})</button><button data-s="pass">✓ Good (${cnt('pass')})</button></div><div>${list.map((c) => chk(c)).join('')}</div>`;
+}
+
+function render(d) {
+  $('#rUrl').textContent = d.finalUrl;
+  $('#rMeta').textContent = 'Analyzed ' + new Date(d.analyzedAt).toLocaleString() + ' · HTTP ' + d.summary.status;
+  const cats = ['Technical SEO', 'On-Page SEO', 'Performance', 'UI / UX', 'Accessibility'];
+  const nIssues = (cat) => d.checks.filter((c) => c.category === cat && c.status === 'fail').length;
+  const tabs = [['overview', 'Overview'], ['tech', 'Tech Stack'], ...cats.map((c) => [c, c]), ['plan', 'Action Plan']];
+  $('#tabs').innerHTML = tabs.map(([id, l], i) => `<button class="tab ${i ? '' : 'on'}" data-t="${esc(id)}">${esc(l)}${cats.includes(id) && nIssues(id) ? `<span class="n">${nIssues(id)}</span>` : ''}${id === 'plan' ? `<span class="n">${d.issues.length}</span>` : ''}</button>`).join('');
+
+  const panes = {};
+  // ---- overview
+  const s = d.summary, ps = d.psi;
+  const g = Object.entries(d.scores).filter(([k]) => cats.includes(k));
+  panes.overview = `
+  <div class="card"><div class="grid g2" style="align-items:center">
+    <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap">${gauge(d.overall, 'Overall score', true)}
+      <div><h2>${d.overall >= 80 ? 'Looking good 👍' : d.overall >= 55 ? 'Needs work' : 'Needs serious attention'}</h2>
+      <div class="small mut">${d.counts.fail} critical · ${d.counts.warn} improvements · ${d.counts.pass} passed</div>
+      <div class="built" style="margin-top:12px;padding:12px 16px"><div class="k">Built with</div><div class="v" style="font-size:18px">${esc(d.tech.summary)}</div></div></div></div>
+    <div class="gauges">${g.map(([k, v]) => gauge(v, k)).join('')}</div></div></div>
+
+  ${ps && ps.ok ? `<div class="card"><h2>Google Lighthouse (mobile)</h2><div class="mut small">Real lab data from Google PageSpeed Insights</div>
+    <div class="grid g2" style="margin-top:12px;align-items:center"><div class="gauges">${gauge(ps.scores.performance, 'Performance')}${gauge(ps.scores.accessibility, 'Accessibility')}${gauge(ps.scores.bestPractices, 'Best Practices')}${gauge(ps.scores.seo, 'SEO')}</div>
+    ${ps.screenshot ? `<div style="text-align:center"><img class="shot" src="${esc(ps.screenshot)}" alt="Mobile screenshot of the page"><div class="small mut">How Google sees it on mobile</div></div>` : ''}</div>
+    ${ps.opportunities.length ? `<h3>Biggest speed opportunities</h3>${ps.opportunities.map((o) => `<div class="chk warn"><div class="t">${esc(o.title)} <span class="mut small">· save ~${(o.savingsMs / 1000).toFixed(1)}s</span></div><p class="mut small tech-only">${esc(o.description)}</p></div>`).join('')}` : ''}</div>`
+  : `<div class="card small mut">Google PageSpeed data ${ps ? 'unavailable: ' + esc(ps.error) : 'was skipped'}. The rest of the audit is unaffected.</div>`}
+
+  <div class="card"><h2>Google search preview</h2><div class="serp" style="margin-top:10px"><div class="u">${esc(d.finalUrl)}</div><div class="tt">${esc(s.title || '(no title)')}</div><div class="ds">${esc(s.metaDesc || 'No meta description — Google will pick random text from the page.')}</div></div></div>
+
+  <div class="card"><h2>Page snapshot</h2><div class="grid g4" style="margin-top:12px">
+    ${[['Server response', s.ttfb + ' ms'], ['HTML size', s.htmlKb + ' KB'], ['Words', s.wordCount], ['Images', s.counts.images], ['Scripts', s.counts.scripts], ['Stylesheets', s.counts.stylesheets], ['Internal links', s.counts.internalLinks], ['External links', s.counts.externalLinks], ['DOM elements', s.counts.dom], ['Sitemap URLs', d.sitemap ? d.sitemap.urls : 'none'], ['robots.txt', d.robots.found ? 'found' : 'missing'], ['Schema types', d.content.schema.length || 'none']].map(([k, v]) => `<div class="stat"><b>${esc(v)}</b><span>${k}</span></div>`).join('')}</div></div>
+
+  <div class="card"><h2>Top 5 things to fix first</h2>${d.issues.slice(0, 5).map((c) => `<div class="chk ${c.status}"><div class="t"><span class="pill ${c.level}">${c.level}</span><span>${esc(c.title)}</span></div><div class="fix"><b>Fix:</b> ${esc(c.fix)}</div></div>`).join('') || '<p>🎉 Nothing critical found.</p>'}</div>`;
+
+  // ---- tech stack
+  const byCat = {}; d.tech.technologies.forEach((t) => (byCat[t.category] ||= []).push(t));
+  panes.tech = `<div class="built"><div class="k">This website is built with</div><div class="v">${esc(d.tech.summary)}</div></div>
+  <div class="card" style="margin-top:16px"><h2>Detected technologies (${d.tech.technologies.length})</h2>
+  ${Object.keys(byCat).sort().map((k) => `<h3>${esc(k)}</h3><div class="tech">${byCat[k].map((t) => `<span class="chip" title="${esc(t.evidence)}">${esc(t.name)}${t.version ? ` <small>v${esc(t.version)}</small>` : ''}</span>`).join('')}</div>`).join('') || '<p class="mut">No known technologies detected — likely a custom/static site.</p>'}
+  <h3 class="tech-only">Server &amp; response headers</h3><table class="tech-only"><tr><td>Server</td><td>${esc(s.headers.server || '—')}</td></tr><tr><td>X-Powered-By</td><td>${esc(s.headers.poweredBy || '—')}</td></tr><tr><td>Compression</td><td>${esc(s.headers.encoding || 'none')}</td></tr><tr><td>Generator meta</td><td>${esc(d.tech.technologies.find((t) => /CMS|builder/.test(t.category))?.evidence || '—')}</td></tr></table>
+  <h3 class="tech-only">Detection evidence</h3><table class="tech-only">${d.tech.technologies.map((t) => `<tr><td>${esc(t.name)}</td><td class="mut">${esc(t.evidence)}</td></tr>`).join('')}</table></div>`;
+
+  // ---- category panes
+  panes['Technical SEO'] = `<div class="card"><div class="bar"><h2>Technical SEO · ${d.scores['Technical SEO']}/100</h2></div>
+    <p class="mut small">Can search engines crawl, understand and trust the site? Covers HTTPS, speed of server, indexability, robots.txt, sitemap, security headers, broken links, structured data.</p>${checkList('Technical SEO')}
+    <h3>Security headers</h3><div class="tech">${Object.entries(d.security).map(([k, v]) => `<span class="chip">${v ? '✅' : '❌'} ${esc(k)}</span>`).join('')}</div></div>`;
+  panes['On-Page SEO'] = `<div class="card"><h2>On-Page SEO · ${d.scores['On-Page SEO']}/100</h2><p class="mut small">Is the content itself optimised? Title, description, headings, keywords, images, links and social tags.</p>${checkList('On-Page SEO')}
+    <h3>Top keywords on this page</h3><div class="tech">${d.content.topKeywords.map((k) => `<span class="chip">${esc(k.word)} <small>×${k.count} · ${k.density}%</small></span>`).join('') || '<span class="mut">Not enough text</span>'}</div>
+    ${d.content.topPhrases.length ? `<h3>Top phrases</h3><div class="tech">${d.content.topPhrases.map((k) => `<span class="chip">${esc(k.word)} <small>×${k.count}</small></span>`).join('')}</div>` : ''}
+    <h3>Heading outline</h3><pre class="detail">${esc(d.content.headings.map((h) => '  '.repeat(h.level - 1) + 'H' + h.level + '  ' + h.text).join('\n') || 'No headings')}</pre></div>`;
+  panes['Performance'] = `<div class="card"><h2>Performance · ${d.scores['Performance']}/100</h2><p class="mut small">Speed affects rankings (Core Web Vitals) and conversions. Static analysis of assets${ps && ps.ok ? ' + real Google Lighthouse metrics' : ''}.</p>${checkList('Performance')}</div>`;
+  const u = d.ui;
+  panes['UI / UX'] = `<div class="card"><h2>UI / UX analysis · ${d.scores['UI / UX']}/100</h2><p class="mut small">Design, layout, readability and conversion signals extracted from the page's HTML and CSS.</p>
+    <div class="grid g2"><div><h3>Colour palette</h3><div class="sw">${u.palette.slice(0, 12).map((c) => `<div class="swatch"><i style="background:${esc(c.hex)}"></i>${esc(c.hex)}</div>`).join('') || '<span class="mut">No colours found</span>'}</div></div>
+    <div><h3>Typography</h3>${u.fonts.length ? u.fonts.map((f) => `<div style="font-family:'${esc(f.name)}',sans-serif;font-size:17px">${esc(f.name)} <span class="mut small">· ${f.uses}× in CSS</span></div>`).join('') : '<span class="mut">System fonts</span>'}
+    <h3>Design signals</h3><div class="tech"><span class="chip">${u.mediaQueries} media queries</span><span class="chip">${u.cssKb} KB CSS</span><span class="chip">${u.darkMode ? 'Dark mode ✓' : 'No dark mode'}</span>${u.frameworks.map((f) => `<span class="chip">${esc(f)}</span>`).join('')}${u.contrast ? `<span class="chip">Text contrast ${u.contrast.ratio}:1</span>` : ''}</div></div></div>
+    ${ps && ps.ok && ps.screenshot ? `<h3>Mobile render</h3><img class="shot" src="${esc(ps.screenshot)}" alt="Mobile screenshot">` : ''}
+    <h3>Findings</h3>${checkList('UI / UX')}</div>`;
+  panes['Accessibility'] = `<div class="card"><h2>Accessibility · ${d.scores['Accessibility']}/100</h2><p class="mut small">Can everyone — including people using screen readers or keyboards — use the site? (WCAG-style checks)</p>${checkList('Accessibility')}</div>`;
+
+  // ---- action plan
+  panes.plan = `<div class="card"><h2>Action plan — what to change</h2><p class="mut small">Sorted by impact. Hand this list to your developer or SEO team.</p>
+  <div class="filters" data-p><button class="on" data-l="all">All (${d.issues.length})</button>${['High', 'Medium', 'Low'].map((l) => `<button data-l="${l}">${l} (${d.issues.filter((i) => i.level === l).length})</button>`).join('')}</div>
+  ${d.issues.map((c, i) => `<div class="chk ${c.status}" data-lv="${c.level}"><div class="t"><span class="pill ${c.level}">${c.level}</span><span>${i + 1}. ${esc(c.title)} <span class="mut small">· ${esc(c.category)}</span></span></div>${c.why ? `<p class="mut small">${esc(c.why)}</p>` : ''}${c.detail ? `<pre class="detail tech-only">${esc(c.detail)}</pre>` : ''}<div class="fix"><b>Fix:</b> ${esc(c.fix)}</div></div>`).join('') || '<p>🎉 No issues found.</p>'}</div>`;
+
+  $('#panes').innerHTML = tabs.map(([id], i) => `<div class="pane" data-p="${esc(id)}" style="display:${i ? 'none' : 'block'}">${panes[id]}</div>`).join('');
+  $('#report').style.display = 'block';
+  document.querySelector('#report').scrollIntoView({ behavior: 'smooth' });
+}
+
+// tab / filter / view handling (event delegation)
+document.addEventListener('click', (e) => {
+  const tab = e.target.closest('.tab');
+  if (tab) { document.querySelectorAll('.tab').forEach((t) => t.classList.toggle('on', t === tab)); document.querySelectorAll('.pane').forEach((p) => { p.style.display = p.dataset.p === tab.dataset.t ? 'block' : 'none'; }); }
+  const f = e.target.closest('.filters button');
+  if (f) {
+    const bar = f.parentElement; bar.querySelectorAll('button').forEach((b) => b.classList.toggle('on', b === f));
+    const scope = bar.hasAttribute('data-p') ? bar.parentElement : bar.nextElementSibling;
+    scope.querySelectorAll('.chk').forEach((c) => { c.style.display = (f.dataset.s ? (f.dataset.s === 'all' || c.dataset.st === f.dataset.s) : (f.dataset.l === 'all' || c.dataset.lv === f.dataset.l)) ? '' : 'none'; });
+  }
+  const v = e.target.closest('#viewSeg button');
+  if (v) { document.querySelectorAll('#viewSeg button').forEach((b) => b.classList.toggle('on', b === v)); document.body.classList.toggle('simple', v.dataset.v === 'simple'); }
+});
+document.body.classList.add('simple');
+
+const save = (name, type, text) => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type })); a.download = name; a.click(); };
+const host = () => (R ? new URL(R.finalUrl).hostname : 'site');
+$('#dlJson').onclick = () => R && save(`audit-${host()}.json`, 'application/json', JSON.stringify({ generatedBy: 'Tarun Developer', tool: 'SiteScope', ...R }, null, 2));
+$('#print').onclick = () => { document.body.classList.remove('simple'); document.querySelectorAll('.pane').forEach((p) => { p.dataset.keep = p.style.display; }); window.print(); };
+$('#dlMd').onclick = () => {
+  if (!R) return;
+  const L = [`# SEO & Tech Audit — ${R.finalUrl}`, `_${new Date(R.analyzedAt).toLocaleString()}_`, '', '**Report by: Tarun Developer** (SiteScope)', '', `**Built with:** ${R.tech.summary}`, `**Overall score:** ${R.overall}/100`, '', '## Scores', ...Object.entries(R.scores).map(([k, v]) => `- ${k}: ${v}/100`), '', '## Technologies', ...R.tech.technologies.map((t) => `- ${t.name}${t.version ? ' ' + t.version : ''} (${t.category})`), '', '## Action plan'];
+  R.issues.forEach((c, i) => { L.push('', `### ${i + 1}. [${c.level}] ${c.title}`, `*${c.category}*`, '', c.why ? `**Why it matters:** ${c.why}` : '', c.detail ? '```\n' + c.detail + '\n```' : '', `**Fix:** ${c.fix}`); });
+  L.push('', '## Passed checks', ...R.checks.filter((c) => c.status === 'pass').map((c) => `- ✅ ${c.title}`), '', '---', '_Generated by SiteScope · Developed by Tarun Developer_');
+  save(`audit-${host()}.md`, 'text/markdown', L.join('\n'));
+};
+</script>
+</body>
+</html>

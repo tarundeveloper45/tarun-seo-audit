@@ -30,4 +30,4 @@ const server = http.createServer(async (req, res) => {
   fs.createReadStream(file).pipe(res);
 });
 
-server.listen(PORT, () => console.log(`SEO Audit Tool running → http://localhost:${PORT}`));
+server.listen(PORT, '0.0.0.0', () => console.log(`SEO Audit Tool running on port ${PORT}`));

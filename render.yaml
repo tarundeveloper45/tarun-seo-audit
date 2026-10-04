@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: sitescope
+    name: tarun-seo-audit
     runtime: node
     plan: free
     buildCommand: npm install

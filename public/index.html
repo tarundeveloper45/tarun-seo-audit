@@ -3,7 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SiteScope – Website SEO & Tech Audit</title>
+<title>Free Website SEO Audit Tool – Tarun Developer</title>
+<meta name="description" content="Free website SEO audit tool by Tarun Developer. Paste any URL to see what it is built with, get a technical + on-page SEO report, UI/UX and accessibility review, and a prioritised fix list.">
+<meta property="og:title" content="Free Website SEO Audit Tool – Tarun Developer">
+<meta property="og:description" content="Paste any URL: tech stack detection, technical & on-page SEO audit, UI/UX review and an action plan.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%234f46e5'/%3E%3Ctext x='50' y='68' font-size='56' font-weight='800' text-anchor='middle' fill='white' font-family='Arial'%3ET%3C/text%3E%3C/svg%3E">
 <style>
 :root{--bg:#f6f7fb;--card:#fff;--ink:#14161f;--mut:#667085;--line:#e4e7ee;--pri:#4f46e5;--pri2:#7c3aed;--pass:#16a34a;--warn:#d97706;--fail:#dc2626;--info:#2563eb;--passbg:#e8f7ee;--warnbg:#fdf3e1;--failbg:#fde9e9;--infobg:#e7effd;--code:#f1f3f9}
 @media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0e1017;--card:#171a24;--ink:#e9ecf5;--mut:#9aa3b8;--line:#272b39;--passbg:#12301f;--warnbg:#3a2a0c;--failbg:#3d1618;--infobg:#142a4d;--code:#1f2330}}
@@ -65,18 +70,58 @@ body.simple .tech-only{display:none}
 .serp{font-family:arial,sans-serif}.serp .u{color:#1a7f37;font-size:13px}.serp .tt{color:#1a0dab;font-size:19px}.serp .ds{color:#4d5156;font-size:13.5px}
 @media(prefers-color-scheme:dark){:root:not([data-theme=light]) .serp .tt{color:#8ab4f8}:root:not([data-theme=light]) .serp .ds{color:#bdc1c6}}
 @media print{header.hero,.bar,.tabs,form,.filters{display:none!important}main{margin:0}.pane{display:block!important}.card{break-inside:avoid}body{background:#fff}}
+
+header.hero{background:radial-gradient(900px 400px at 85% -10%,#7c3aed66,transparent),radial-gradient(700px 400px at 0% 110%,#2563eb55,transparent),#0f1226;padding:22px 0 70px}
+.top{display:flex;justify-content:space-between;align-items:center}
+.brand{white-space:nowrap;display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:800;font-size:18px}
+.brand .mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#6366f1,#a855f7);display:grid;place-items:center;font-size:18px}
+.navr{display:flex;gap:8px}.btn-ghost{text-decoration:none;display:inline-block;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);transition:.15s}.btn-ghost:hover{background:rgba(255,255,255,.18)}
+.badge{display:inline-block;margin-top:44px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:99px;padding:5px 14px;font-size:13px}
+h1{font-size:clamp(28px,5vw,50px);margin:14px 0 12px;letter-spacing:-1.2px;max-width:820px}
+.grad{background:linear-gradient(90deg,#a5b4fc,#f0abfc,#67e8f9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{font-size:17px;max-width:660px;opacity:.85}
+form.search{max-width:780px;padding:7px;border-radius:16px;align-items:center;box-shadow:0 20px 50px rgba(0,0,0,.4),0 0 0 4px rgba(255,255,255,.08)}
+form.search .gl{padding-left:12px;font-size:18px}form.search input{font-size:17px}
+form.search button{background:linear-gradient(135deg,#4f46e5,#7c3aed);padding:14px 28px;border-radius:12px;font-size:16px;transition:.15s}form.search button:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.1)}
+.opts{opacity:.9}.mut2{opacity:.65}
+.samples{margin-top:14px;font-size:13px;opacity:.95}.samples button{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:99px;padding:3px 12px;margin-left:6px;cursor:pointer;font:inherit;font-size:13px}.samples button:hover{background:rgba(255,255,255,.22)}
+main{margin-top:-34px}
+.feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.feat .card{margin:0;transition:.2s}.feat .card:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(79,70,229,.15)}
+.feat .ic{font-size:26px;width:48px;height:48px;border-radius:12px;background:var(--code);display:grid;place-items:center;margin-bottom:8px}.feat h3{margin:0 0 4px}.feat p{margin:0;color:var(--mut);font-size:14px}
+.steps{margin-top:16px}.steps .st{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:12px}.steps .st div{display:flex;gap:12px;align-items:center}
+.steps b{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;display:grid;place-items:center;flex:none}
+.card{box-shadow:0 1px 2px rgba(16,24,40,.04)}
+.small a{color:var(--pri);text-decoration:none}
+.foot{background:#0f1226;color:#cfd3ea;text-align:center;padding:34px 0 28px;margin-top:30px}.foot .wrap{display:grid;gap:12px;justify-items:center}
+.fbtn{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;text-decoration:none;padding:11px 22px;border-radius:10px;font-weight:600}.fbtn:hover{filter:brightness(1.12)}
+@media print{.foot{background:none;color:#444;margin:0;padding:10px 0}.fbtn{background:none;color:#4f46e5;padding:0}#landing{display:none}}
 </style>
 </head>
 <body>
 <header class="hero"><div class="wrap">
-  <div class="top"><div class="logo">🔍 SiteScope</div><button class="btn-ghost" id="theme">🌓 Theme</button></div>
-  <h1>Paste any website URL.<br>Get the full SEO, tech &amp; UI audit.</h1>
-  <p class="sub">Finds out what the site is built on, runs a technical + on-page SEO audit, reviews UI/UX and accessibility, and gives you a prioritised fix list.</p>
-  <form class="search" id="form"><input id="url" type="text" placeholder="example.com or https://example.com/page" autocomplete="off" autofocus required><button id="go">Analyze</button></form>
-  <div class="opts"><label><input type="checkbox" id="psi" checked> Include Google PageSpeed / Core Web Vitals (adds ~20s)</label></div>
+  <nav class="top">
+    <a class="brand" href="https://tarundeveloper-9n6b.vercel.app/" target="_blank" rel="noopener"><span class="mark">T</span><span>Tarun Developer</span></a>
+    <div class="navr"><a class="btn-ghost" href="https://tarundeveloper-9n6b.vercel.app/" target="_blank" rel="noopener">Visit my website ↗</a><button class="btn-ghost" id="theme" aria-label="Toggle theme">🌓</button></div>
+  </nav>
+  <div class="badge">⚡ Free · No signup · Instant report</div>
+  <h1>Audit any website's <span class="grad">SEO, tech &amp; UI</span> in one click</h1>
+  <p class="sub">Paste a URL. Find out what it's built on, what's hurting its Google ranking, and exactly what to fix — in plain English or developer detail.</p>
+  <form class="search" id="form"><span class="gl">🔍</span><input id="url" type="text" placeholder="example.com" autocomplete="off" autofocus required><button id="go">Analyze →</button></form>
+  <div class="opts"><label><input type="checkbox" id="psi"> Add Google PageSpeed / Core Web Vitals <span class="mut2">(slower, needs API quota)</span></label></div>
+  <div class="samples">Try: <button type="button" data-u="wordpress.org">wordpress.org</button><button type="button" data-u="shopify.com">shopify.com</button><button type="button" data-u="vercel.com">vercel.com</button></div>
 </div></header>
 
 <main class="wrap">
+  <section id="landing">
+    <div class="feat">
+      <div class="card"><div class="ic">🧩</div><h3>Tech-stack detection</h3><p>WordPress, Shopify, React, Next.js, Cloudflare and 130+ more — with versions.</p></div>
+      <div class="card"><div class="ic">⚙️</div><h3>Technical SEO</h3><p>HTTPS, speed, robots.txt, sitemap, security headers, broken links, schema.</p></div>
+      <div class="card"><div class="ic">📝</div><h3>On-page SEO</h3><p>Title, description, headings, keywords, images, links and social tags.</p></div>
+      <div class="card"><div class="ic">🎨</div><h3>UI/UX &amp; accessibility</h3><p>Colours, fonts, responsiveness, contrast, CTAs, forms and WCAG checks.</p></div>
+    </div>
+    <div class="card steps"><h2>How it works</h2><div class="st"><div><b>1</b><span>Paste any public website URL</span></div><div><b>2</b><span>We scan the page, files &amp; headers</span></div><div><b>3</b><span>Get scores + a prioritised fix list, download as PDF</span></div></div></div>
+  </section>
   <div class="card progress" id="progress"><div class="spinner"></div><div id="ptext">Starting…</div></div>
   <div class="card err" id="err"></div>
 
@@ -88,15 +133,18 @@ body.simple .tech-only{display:none}
         <button class="btn" id="dlJson">⬇ JSON</button><button class="btn" id="dlMd">⬇ Markdown</button><button class="btn" id="print">🖨 Print / PDF</button>
       </div>
     </div>
-    <div class="mut small" style="margin:-4px 0 10px">Audit report by <b>Tarun Developer</b> · SiteScope</div>
+    <div class="mut small" style="margin:-4px 0 10px">Audit report by <a href="https://tarundeveloper-9n6b.vercel.app/" target="_blank" rel="noopener"><b>Tarun Developer</b></a></div>
     <div class="tabs" id="tabs"></div>
     <div id="panes"></div>
   </div>
 </main>
-<footer class="wrap" style="text-align:center;padding:10px 16px 40px;color:var(--mut);font-size:13px">Report generated by <b>SiteScope</b> · Developed by <b>Tarun Developer</b></footer>
+<footer class="foot"><div class="wrap"><div><b>Tarun Developer</b> — web developer &amp; SEO builder</div><a class="fbtn" href="https://tarundeveloper-9n6b.vercel.app/" target="_blank" rel="noopener">Need a website or SEO help? Visit my website ↗</a><div class="mut small">© <span id="yr"></span> Tarun Developer · Free SEO audit tool</div></div></footer>
 
 <script>
 const $ = (s) => document.querySelector(s);
+const SITE = 'https://tarundeveloper-9n6b.vercel.app/';
+$('#yr').textContent = new Date().getFullYear();
+document.querySelectorAll('.samples button').forEach((b) => { b.onclick = () => { $('#url').value = b.dataset.u; $('#form').requestSubmit(); }; });
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const col = (n) => (n >= 80 ? 'var(--pass)' : n >= 50 ? 'var(--warn)' : 'var(--fail)');
 let R = null, es = null;
@@ -109,7 +157,7 @@ $('#form').onsubmit = (e) => {
   e.preventDefault();
   const url = $('#url').value.trim(); if (!url) return;
   if (es) es.close();
-  $('#report').style.display = 'none'; $('#err').style.display = 'none'; $('#progress').style.display = 'block';
+  $('#landing').style.display = 'none'; $('#report').style.display = 'none'; $('#err').style.display = 'none'; $('#progress').style.display = 'block';
   $('#ptext').textContent = 'Starting…'; $('#go').disabled = true;
   es = new EventSource('/api/analyze?url=' + encodeURIComponent(url) + '&psi=' + ($('#psi').checked ? 1 : 0));
   const done = () => { es.close(); $('#go').disabled = false; $('#progress').style.display = 'none'; };
@@ -225,13 +273,13 @@ document.body.classList.add('simple');
 
 const save = (name, type, text) => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type })); a.download = name; a.click(); };
 const host = () => (R ? new URL(R.finalUrl).hostname : 'site');
-$('#dlJson').onclick = () => R && save(`audit-${host()}.json`, 'application/json', JSON.stringify({ generatedBy: 'Tarun Developer', tool: 'SiteScope', ...R }, null, 2));
+$('#dlJson').onclick = () => R && save(`audit-${host()}.json`, 'application/json', JSON.stringify({ generatedBy: 'Tarun Developer', website: SITE, ...R }, null, 2));
 $('#print').onclick = () => { document.body.classList.remove('simple'); document.querySelectorAll('.pane').forEach((p) => { p.dataset.keep = p.style.display; }); window.print(); };
 $('#dlMd').onclick = () => {
   if (!R) return;
-  const L = [`# SEO & Tech Audit — ${R.finalUrl}`, `_${new Date(R.analyzedAt).toLocaleString()}_`, '', '**Report by: Tarun Developer** (SiteScope)', '', `**Built with:** ${R.tech.summary}`, `**Overall score:** ${R.overall}/100`, '', '## Scores', ...Object.entries(R.scores).map(([k, v]) => `- ${k}: ${v}/100`), '', '## Technologies', ...R.tech.technologies.map((t) => `- ${t.name}${t.version ? ' ' + t.version : ''} (${t.category})`), '', '## Action plan'];
+  const L = [`# SEO & Tech Audit — ${R.finalUrl}`, `_${new Date(R.analyzedAt).toLocaleString()}_`, '', `**Report by [Tarun Developer](${SITE})**`, '', `**Built with:** ${R.tech.summary}`, `**Overall score:** ${R.overall}/100`, '', '## Scores', ...Object.entries(R.scores).map(([k, v]) => `- ${k}: ${v}/100`), '', '## Technologies', ...R.tech.technologies.map((t) => `- ${t.name}${t.version ? ' ' + t.version : ''} (${t.category})`), '', '## Action plan'];
   R.issues.forEach((c, i) => { L.push('', `### ${i + 1}. [${c.level}] ${c.title}`, `*${c.category}*`, '', c.why ? `**Why it matters:** ${c.why}` : '', c.detail ? '```\n' + c.detail + '\n```' : '', `**Fix:** ${c.fix}`); });
-  L.push('', '## Passed checks', ...R.checks.filter((c) => c.status === 'pass').map((c) => `- ✅ ${c.title}`), '', '---', '_Generated by SiteScope · Developed by Tarun Developer_');
+  L.push('', '## Passed checks', ...R.checks.filter((c) => c.status === 'pass').map((c) => `- ✅ ${c.title}`), '', '---', `_Generated by [Tarun Developer](${SITE}) — ${SITE}_`);
   save(`audit-${host()}.md`, 'text/markdown', L.join('\n'));
 };
 </script>

@@ -1,9 +1,9 @@
-# SiteScope – Website SEO, Tech & UI Audit
+# Free Website SEO Audit Tool — by Tarun Developer
 
 Enter any website URL → detect what it is built with, get a technical + on-page SEO audit,
 UI/UX and accessibility review, and a prioritised action plan. Export as JSON / Markdown / PDF.
 
-Developed by **Tarun Developer**.
+Developed by **[Tarun Developer](https://tarundeveloper-9n6b.vercel.app/)** — https://tarundeveloper-9n6b.vercel.app/
 
 ## Run locally
 ```bash

@@ -1,6 +1,7 @@
 {
-  "name": "seo-audit-tool",
+  "name": "tarun-seo-audit-tool",
   "version": "1.0.0",
+  "author": "Tarun Developer",
   "description": "Enter any website URL: detect its tech stack, run technical + on-page SEO audit, analyse UI/UX & accessibility, get an action plan.",
   "main": "server.js",
   "scripts": { "start": "node server.js" },

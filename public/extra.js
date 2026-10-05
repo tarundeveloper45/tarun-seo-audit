@@ -123,6 +123,7 @@ function extraMarkdown(R) {
     if (!name || !message) { status.textContent = 'Please enter your name and message.'; return; }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { status.textContent = 'Please enter a valid email address.'; return; }
     if (f.get('_honey')) return; // bot
+    try { const last = +localStorage.getItem('cf-last') || 0; if (Date.now() - last < 60000) { status.textContent = 'Please wait a minute before sending another message.'; return; } } catch { /* storage blocked */ }
     btn.disabled = true; btn.textContent = 'Sending…'; status.className = 'small'; status.textContent = '';
     try {
       const d = form.dataset;
@@ -141,6 +142,7 @@ function extraMarkdown(R) {
         const j = await r.json().catch(() => ({}));
         if (!r.ok || String(j.success) === 'false') throw new Error(j.message || 'Request failed');
       }
+      try { localStorage.setItem('cf-last', String(Date.now())); } catch { /* ignore */ }
       form.reset(); status.className = 'small ok'; status.textContent = '✅ Thank you! Your message was sent. I will get back to you soon.';
     } catch (err) {
       status.className = 'small bad'; status.textContent = 'Sorry, the message could not be sent. Please call or WhatsApp +91 98210 12189 instead.';

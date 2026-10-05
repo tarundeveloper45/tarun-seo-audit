@@ -1,0 +1,33 @@
+<div class="contact-grid">
+  <div class="contact-left reveal" style="--d:.1s">
+    <div>
+      <h2>Get in touch</h2>
+      <p>Reach out through any channel below. I usually reply within one business day.</p>
+    </div>
+    <div class="clinks">
+      <a class="clink" href="tel:{{PHONE_TEL}}"><span class="ib"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span><span>{{PHONE_DISPLAY}}</span></a>
+      <a class="clink" href="{{WHATSAPP}}" target="_blank" rel="noopener"><span class="ib"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></span><span>Chat on WhatsApp</span></a>
+      <a class="clink" href="{{SITE}}" target="_blank" rel="noopener"><span class="ib"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span><span>{{SITE_LABEL}}</span></a>
+    </div>
+    <div class="globe-wrap" aria-hidden="true"><canvas id="globe"></canvas></div>
+  </div>
+
+  <div class="card contact-form-card reveal" id="contact-form-card" style="--d:.25s">
+    <h2>Send me a message</h2>
+    <p>Fill in the form and I will reply by email or phone. Fields marked * are required.</p>
+    <div class="dots" role="separator"></div>
+    <form id="contactForm" method="post" action="/contact" novalidate>
+      <div class="fgrid2">
+        <div><label for="cf-name">Full name *</label><input id="cf-name" name="name" type="text" placeholder="Your name" autocomplete="name" required maxlength="80"></div>
+        <div><label for="cf-email">Email address *</label><input id="cf-email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required maxlength="120"></div>
+        <div><label for="cf-phone">Phone / WhatsApp</label><input id="cf-phone" name="phone" type="tel" placeholder="+91 …" autocomplete="tel" maxlength="20"></div>
+        <div><label for="cf-subject">Subject</label><select id="cf-subject" name="subject"><option>Website audit help</option><option>SEO / technical fixes</option><option>New website</option><option>Report a bug</option><option>Other</option></select></div>
+      </div>
+      <label for="cf-message">Message *</label>
+      <textarea id="cf-message" name="message" rows="5" placeholder="Type your message here" required maxlength="2000"></textarea>
+      <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+      <button type="submit" class="btn-submit" id="cf-send"><span class="lbl">Send message</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+      <p id="cf-status" role="status" aria-live="polite" class="small"></p>
+    </form>
+  </div>
+</div>

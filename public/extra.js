@@ -124,7 +124,7 @@ function extraMarkdown(R) {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { status.textContent = 'Please enter a valid email address.'; return; }
     if (f.get('_honey')) return; // bot
     try { const last = +localStorage.getItem('cf-last') || 0; if (Date.now() - last < 60000) { status.textContent = 'Please wait a minute before sending another message.'; return; } } catch { /* storage blocked */ }
-    btn.disabled = true; btn.textContent = 'Sending…'; status.className = 'small'; status.textContent = '';
+    btn.disabled = true; btn.querySelector('.lbl').textContent = 'Sending…'; status.className = 'small'; status.textContent = '';
     try {
       const d = form.dataset;
       if (d.ejsService && d.ejsTemplate && d.ejsKey) {
@@ -147,6 +147,6 @@ function extraMarkdown(R) {
       location.href = '/thank-you';
     } catch (err) {
       status.className = 'small bad'; status.textContent = 'Sorry, the message could not be sent. Please call or WhatsApp +91 98210 12189 instead.';
-    } finally { btn.disabled = false; btn.textContent = 'Send message'; }
+    } finally { btn.disabled = false; btn.querySelector('.lbl').textContent = 'Send message'; }
   });
 })();

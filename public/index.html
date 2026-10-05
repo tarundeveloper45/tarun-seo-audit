@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -119,10 +119,27 @@ form.search:focus-within{box-shadow:0 20px 50px rgba(0,0,0,.4),0 0 0 4px rgba(16
 </style>
 </head>
 <body>
+<div id="space" aria-hidden="true"><canvas id="stars"></canvas><div class="veil"></div><div class="planet"><i class="p1"></i><i class="p2"></i></div></div>
+<div id="astro" aria-hidden="true"><div class="float">
+  <svg class="astro-fig" viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="visor" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a4bb8"/><stop offset="1" stop-color="#0a1030"/></linearGradient></defs>
+    <rect x="48" y="88" width="104" height="96" rx="20" fill="#bfc8dd"/>
+    <rect x="62" y="178" width="28" height="50" rx="13" fill="#f3f5fb" stroke="#c9d1e3"/><rect x="110" y="178" width="28" height="50" rx="13" fill="#f3f5fb" stroke="#c9d1e3"/>
+    <rect x="58" y="218" width="38" height="20" rx="9" fill="#5b6488"/><rect x="104" y="218" width="38" height="20" rx="9" fill="#5b6488"/>
+    <rect x="62" y="96" width="76" height="92" rx="30" fill="#f6f8fc" stroke="#c9d1e3"/>
+    <rect x="82" y="122" width="36" height="22" rx="6" fill="#323a5c"/><circle cx="91" cy="133" r="3.2" fill="#ff5d73"/><circle cx="101" cy="133" r="3.2" fill="#4ade80"/><circle cx="111" cy="133" r="3.2" fill="#7aa7ff"/>
+    <g transform="rotate(-28 62 112)"><rect x="22" y="100" width="48" height="24" rx="12" fill="#f6f8fc" stroke="#c9d1e3"/><circle cx="26" cy="112" r="11" fill="#8b93b8"/></g>
+    <g transform="rotate(26 138 112)"><rect x="130" y="100" width="48" height="24" rx="12" fill="#f6f8fc" stroke="#c9d1e3"/><circle cx="174" cy="112" r="11" fill="#8b93b8"/></g>
+    <circle cx="100" cy="62" r="47" fill="#f8f9fd" stroke="#c9d1e3" stroke-width="2"/>
+    <ellipse cx="100" cy="64" rx="34" ry="29" fill="url(#visor)"/>
+    <path d="M78 52c8-10 22-13 33-8-9 1-19 6-25 15-3 4-7 3-8-7z" fill="#fff" opacity=".35"/>
+  </svg>
+  <svg class="spark" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z"/></svg>
+</div></div>
 <header class="hero"><div class="wrap">
   <nav class="top">
     <a class="brand" href="/" aria-label="Tarun Developer – Free Website Audit Tool home"><span class="mark">T</span><span>Tarun Developer</span></a>
-    <div class="navr"><a class="btn-ghost" href="https://tarundeveloper-9n6b.vercel.app/" target="_blank" rel="noopener">Visit my website ↗</a><button class="btn-ghost" id="theme" aria-label="Toggle theme">🌓</button></div>
+    <div class="navr"><a class="btn-ghost" href="https://tarundeveloper-9n6b.vercel.app/" target="_blank" rel="noopener"><span class="long">Visit my website</span><span class="short">Portfolio</span> ↗</a></div>
   </nav>
   <div class="badge">⚡ Free · No signup · Instant report</div>
   <h1>{{H1}}</h1>
@@ -161,8 +178,6 @@ const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '
 const col = (n) => (n >= 80 ? 'var(--pass)' : n >= 50 ? 'var(--warn)' : 'var(--fail)');
 let R = null, es = null;
 
-// theme
-$('#theme').onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme:dark)').matches; r.dataset.theme = dark ? 'light' : 'dark'; };
 
 // run
 $('#form').onsubmit = (e) => {

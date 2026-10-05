@@ -223,13 +223,13 @@ function render(d) {
   $('#rMeta').textContent = 'Analyzed ' + new Date(d.analyzedAt).toLocaleString() + ' · HTTP ' + d.summary.status;
   const cats = ['Technical SEO', 'On-Page SEO', 'Performance', 'UI / UX', 'Accessibility'];
   const nIssues = (cat) => d.checks.filter((c) => c.category === cat && c.status === 'fail').length;
-  const tabs = [['overview', 'Overview'], ['tech', 'Tech Stack'], ...cats.map((c) => [c, c]), ['plan', 'Action Plan']];
-  $('#tabs').innerHTML = tabs.map(([id, l], i) => `<button class="tab ${i ? '' : 'on'}" data-t="${esc(id)}">${esc(l)}${cats.includes(id) && nIssues(id) ? `<span class="n">${nIssues(id)}</span>` : ''}${id === 'plan' ? `<span class="n">${d.issues.length}</span>` : ''}</button>`).join('');
+  const tabs = [['overview', 'Overview'], ['tech', 'Tech Stack'], ['authority', 'Domain Authority'], ['traffic', 'Traffic Sources'], ['sitemap', 'Sitemap'], ...cats.map((c) => [c, c]), ['plan', 'Action Plan']];
+  $('#tabs').innerHTML = tabs.map(([id, l], i) => `<button class="tab ${i ? '' : 'on'}" data-t="${esc(id)}">${esc(l)}${(cats.includes(id) || id === 'traffic') && nIssues(id === 'traffic' ? 'Traffic Sources' : id) ? `<span class="n">${nIssues(id)}</span>` : ''}${id === 'plan' ? `<span class="n">${d.issues.length}</span>` : ''}</button>`).join('');
 
   const panes = {};
   // ---- overview
   const s = d.summary, ps = d.psi;
-  const g = Object.entries(d.scores).filter(([k]) => cats.includes(k));
+  const g = Object.entries(d.scores).filter(([k]) => cats.concat('Traffic Sources').includes(k));
   panes.overview = `
   <div class="card"><div class="grid g2" style="align-items:center">
     <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap">${gauge(d.overall, 'Overall score', true)}
@@ -244,10 +244,12 @@ function render(d) {
     ${ps.opportunities.length ? `<h3>Biggest speed opportunities</h3>${ps.opportunities.map((o) => `<div class="chk warn"><div class="t">${esc(o.title)} <span class="mut small">· save ~${(o.savingsMs / 1000).toFixed(1)}s</span></div><p class="mut small tech-only">${esc(o.description)}</p></div>`).join('')}` : ''}</div>`
   : `<div class="card small mut">Google PageSpeed data ${ps ? 'unavailable: ' + esc(ps.error) : 'was skipped'}. The rest of the audit is unaffected.</div>`}
 
+  ${overviewAuthorityCard(d)}
+
   <div class="card"><h2>Google search preview</h2><div class="serp" style="margin-top:10px"><div class="u">${esc(d.finalUrl)}</div><div class="tt">${esc(s.title || '(no title)')}</div><div class="ds">${esc(s.metaDesc || 'No meta description — Google will pick random text from the page.')}</div></div></div>
 
   <div class="card"><h2>Page snapshot</h2><div class="grid g4" style="margin-top:12px">
-    ${[['Server response', s.ttfb + ' ms'], ['HTML size', s.htmlKb + ' KB'], ['Words', s.wordCount], ['Images', s.counts.images], ['Scripts', s.counts.scripts], ['Stylesheets', s.counts.stylesheets], ['Internal links', s.counts.internalLinks], ['External links', s.counts.externalLinks], ['DOM elements', s.counts.dom], ['Sitemap URLs', d.sitemap ? d.sitemap.urls : 'none'], ['robots.txt', d.robots.found ? 'found' : 'missing'], ['Schema types', d.content.schema.length || 'none']].map(([k, v]) => `<div class="stat"><b>${esc(v)}</b><span>${k}</span></div>`).join('')}</div></div>
+    ${[['Server response', s.ttfb + ' ms'], ['HTML size', s.htmlKb + ' KB'], ['Words', s.wordCount], ['Images', s.counts.images], ['Scripts', s.counts.scripts], ['Stylesheets', s.counts.stylesheets], ['Internal links', s.counts.internalLinks], ['External links', s.counts.externalLinks], ['DOM elements', s.counts.dom], ['Sitemap URLs', d.sitemap.found ? d.sitemap.total : 'none'], ['robots.txt', d.robots.found ? 'found' : 'missing'], ['Schema types', d.content.schema.length || 'none']].map(([k, v]) => `<div class="stat"><b>${esc(v)}</b><span>${k}</span></div>`).join('')}</div></div>
 
   <div class="card"><h2>Top 5 things to fix first</h2>${d.issues.slice(0, 5).map((c) => `<div class="chk ${c.status}"><div class="t"><span class="pill ${c.level}">${c.level}</span><span>${esc(c.title)}</span></div><div class="fix"><b>Fix:</b> ${esc(c.fix)}</div></div>`).join('') || '<p>🎉 Nothing critical found.</p>'}</div>`;
 
@@ -258,6 +260,10 @@ function render(d) {
   ${Object.keys(byCat).sort().map((k) => `<h3>${esc(k)}</h3><div class="tech">${byCat[k].map((t) => `<span class="chip" title="${esc(t.evidence)}">${esc(t.name)}${t.version ? ` <small>v${esc(t.version)}</small>` : ''}</span>`).join('')}</div>`).join('') || '<p class="mut">No known technologies detected — likely a custom/static site.</p>'}
   <h3 class="tech-only">Server &amp; response headers</h3><table class="tech-only"><tr><td>Server</td><td>${esc(s.headers.server || '—')}</td></tr><tr><td>X-Powered-By</td><td>${esc(s.headers.poweredBy || '—')}</td></tr><tr><td>Compression</td><td>${esc(s.headers.encoding || 'none')}</td></tr><tr><td>Generator meta</td><td>${esc(d.tech.technologies.find((t) => /CMS|builder/.test(t.category))?.evidence || '—')}</td></tr></table>
   <h3 class="tech-only">Detection evidence</h3><table class="tech-only">${d.tech.technologies.map((t) => `<tr><td>${esc(t.name)}</td><td class="mut">${esc(t.evidence)}</td></tr>`).join('')}</table></div>`;
+
+  panes.authority = authorityPane(d);
+  panes.traffic = trafficPane(d);
+  panes.sitemap = sitemapPane(d);
 
   // ---- category panes
   panes['Technical SEO'] = `<div class="card"><div class="bar"><h2>Technical SEO · ${d.scores['Technical SEO']}/100</h2></div>
@@ -309,10 +315,12 @@ $('#print').onclick = () => { document.body.classList.remove('simple'); document
 $('#dlMd').onclick = () => {
   if (!R) return;
   const L = [`# SEO & Tech Audit — ${R.finalUrl}`, `_${new Date(R.analyzedAt).toLocaleString()}_`, '', `**Report by [Tarun Developer](${SITE})**`, '', `**Built with:** ${R.tech.summary}`, `**Overall score:** ${R.overall}/100`, '', '## Scores', ...Object.entries(R.scores).map(([k, v]) => `- ${k}: ${v}/100`), '', '## Technologies', ...R.tech.technologies.map((t) => `- ${t.name}${t.version ? ' ' + t.version : ''} (${t.category})`), '', '## Action plan'];
+  L.splice(L.indexOf('## Action plan'), 0, ...extraMarkdown(R).slice(1), '');
   R.issues.forEach((c, i) => { L.push('', `### ${i + 1}. [${c.level}] ${c.title}`, `*${c.category}*`, '', c.why ? `**Why it matters:** ${c.why}` : '', c.detail ? '```\n' + c.detail + '\n```' : '', `**Fix:** ${c.fix}`); });
   L.push('', '## Passed checks', ...R.checks.filter((c) => c.status === 'pass').map((c) => `- ✅ ${c.title}`), '', '---', `_Generated by [Tarun Developer](${SITE}) — ${SITE}_`);
   save(`audit-${host()}.md`, 'text/markdown', L.join('\n'));
 };
 </script>
+<script src="/extra.js"></script>
 </body>
 </html>

@@ -11,3 +11,9 @@ npm install
 npm start        # http://localhost:3000
 ```
 Optional: set `PSI_API_KEY` (free Google key) for Core Web Vitals / Lighthouse data.
+
+## Features
+- Tech-stack detection, technical + on-page SEO, UI/UX & accessibility audit, prioritised action plan
+- **Domain Authority estimate** (Tranco rank + domain age + trust signals; optional real Moz DA via `MOZ_ACCESS_ID` / `MOZ_SECRET_KEY`, OpenPageRank via `OPR_API_KEY`)
+- **Traffic sources** (organic, social, paid, email, direct, referral readiness + rough volume estimate)
+- **Sitemap extractor/generator** with downloadable `sitemap.txt` and `sitemap.xml`

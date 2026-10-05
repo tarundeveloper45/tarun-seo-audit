@@ -143,7 +143,8 @@ function extraMarkdown(R) {
         if (!r.ok || String(j.success) === 'false') throw new Error(j.message || 'Request failed');
       }
       try { localStorage.setItem('cf-last', String(Date.now())); } catch { /* ignore */ }
-      form.reset(); status.className = 'small ok'; status.textContent = '✅ Thank you! Your message was sent. I will get back to you soon.';
+      form.reset(); status.className = 'small ok'; status.textContent = '✅ Message sent! Redirecting…';
+      location.href = '/thank-you';
     } catch (err) {
       status.className = 'small bad'; status.textContent = 'Sorry, the message could not be sent. Please call or WhatsApp +91 98210 12189 instead.';
     } finally { btn.disabled = false; btn.textContent = 'Send message'; }

@@ -60,11 +60,11 @@ const server = http.createServer(async (req, res) => {
     return send(req, res, 200, 'text/plain; charset=utf-8', ['User-agent: *', 'Allow: /', 'Disallow: /api/', '', `Sitemap: ${origin}/sitemap.xml`, ''].join(NL), { 'cache-control': 'public, max-age=3600' });
   }
   if (u.pathname === '/sitemap.xml') {
-    const items = pages.map((p) => `  <url><loc>${url(p.path)}</loc><lastmod>${lastmod}</lastmod><changefreq>${p.type === 'tool' || p.path === '/' ? 'weekly' : 'monthly'}</changefreq><priority>${p.path === '/' ? '1.0' : p.type === 'tool' ? '0.9' : p.type === 'guide' ? '0.7' : '0.4'}</priority></url>`).join(NL);
+    const items = pages.filter((p) => p.type !== 'thanks').map((p) => `  <url><loc>${url(p.path)}</loc><lastmod>${lastmod}</lastmod><changefreq>${p.type === 'tool' || p.path === '/' ? 'weekly' : 'monthly'}</changefreq><priority>${p.path === '/' ? '1.0' : p.type === 'tool' ? '0.9' : p.type === 'guide' ? '0.7' : '0.4'}</priority></url>`).join(NL);
     return send(req, res, 200, 'application/xml; charset=utf-8', `<?xml version="1.0" encoding="UTF-8"?>${NL}<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${NL}${items}${NL}</urlset>${NL}`, { 'cache-control': 'public, max-age=3600' });
   }
   if (u.pathname === '/sitemap.txt') {
-    return send(req, res, 200, 'text/plain; charset=utf-8', pages.map((p) => url(p.path)).join(NL) + NL, { 'cache-control': 'public, max-age=3600' });
+    return send(req, res, 200, 'text/plain; charset=utf-8', pages.filter((p) => p.type !== 'thanks').map((p) => url(p.path)).join(NL) + NL, { 'cache-control': 'public, max-age=3600' });
   }
   if (u.pathname === '/favicon.ico') { u.pathname = '/favicon-32.png'; }
 

@@ -33,7 +33,28 @@ function authorityPane(d) {
 }
 
 function trafficPane(d) {
-  const T = d.traffic;
+  const T = d.traffic, K = T.kpis;
+  const dash = '<span class="mut">—</span>';
+  const kpiStrip = `<div class="kpis">
+    <div class="kpi"><div class="kl">Domain Trust <i title="Authority estimate: popularity + domain age + trust signals">ⓘ</i></div><div class="big">${K.domainTrust}<small>/100</small></div>
+      <div class="ksep"></div><div class="kl">Page Trust <i title="Average of Technical and On-Page SEO scores">ⓘ</i></div><div class="big">${K.pageTrust}<small>/100</small></div></div>
+    <div class="kpi"><div class="kl">Organic traffic <i title="Estimated from public popularity rank. Not measured.">ⓘ</i></div><div class="big sm">${esc(T.estimate.label.replace(' visits/month', ''))}</div><div class="ku">visits/mo (estimate)</div>
+      <div class="krow"><span>Content keywords</span><b>${K.organic.keywords}</b></div><div class="krow"><span>Source</span><b class="mut">Tranco rank</b></div></div>
+    <div class="kpi"><div class="kl">Paid traffic <i title="Detected from ad / conversion tags on the page">ⓘ</i></div><div class="big sm">${K.paid.detected ? 'Running ads' : 'No ads found'}</div><div class="ku">${K.paid.detected ? 'tags detected' : 'no ad tags on page'}</div>
+      <div class="krow"><span>Tags</span><b>${K.paid.tags.length ? esc(K.paid.tags.join(', ')) : dash}</b></div><div class="krow"><span>Analytics</span><b>${T.tracking.ok ? '✅' : '❌'}</b></div></div>
+    <div class="kpi"><div class="kl">Referring domains <i title="Needs a backlink database (Moz / Ahrefs / Search Console)">ⓘ</i></div><div class="big">${K.referringDomains != null ? K.referringDomains.toLocaleString('en-US') : dash}</div>
+      <div class="ksep"></div><div class="kl">Backlinks</div><div class="big">${K.backlinks != null ? K.backlinks.toLocaleString('en-US') : dash}</div>
+      ${K.referringDomains == null ? '<div class="ku">Needs Moz API or Search Console</div>' : '<div class="ku">via ' + esc(K.backlinksSource) + '</div>'}</div></div>`;
+
+  const rows = T.markets.length ? T.markets.map((m) => `<tr><td><b>${esc(m.country)}</b></td>
+      <td style="min-width:110px"><div style="display:flex;align-items:center;gap:8px"><div class="meter" style="flex:1;margin:0;min-width:56px"><i style="width:${m.share}%;background:var(--pri)"></i></div><span>${m.share}%</span></div></td>
+      <td><span class="pill ${m.confidence === 'High' ? 'pass' : m.confidence === 'Medium' ? 'warn' : 'info'}">${m.confidence}</span></td>
+      <td class="mut small">${esc(m.evidence.join(' · '))}</td></tr>`).join('')
+    : '<tr><td colspan="4" class="mut">No country signals found (no country domain, currency, phone code or region language).</td></tr>';
+  const countries = `<div class="card"><h2>Traffic distribution by country</h2>
+    <p class="mut small">Likely audience countries, inferred from on-site signals (domain, language, currency, phone codes, places). This shows who the site <i>targets</i>, not measured visitors.</p>
+    <table><tr><th>Country</th><th>Signal share</th><th>Confidence</th><th>Evidence</th></tr>${rows}</table></div>`;
+
   const cards = T.channels.map((c) => `<div class="card" style="margin:0">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><h3 style="margin:0">${c.icon} ${esc(c.name)}</h3>
         <span class="pill ${c.score >= 70 ? 'pass' : c.score >= 40 ? 'warn' : 'fail'}">${c.score}% ${c.level}</span></div>
@@ -41,14 +62,13 @@ function trafficPane(d) {
       <div style="margin-top:10px">${c.signals.map((x) => `<div class="small" style="margin:3px 0">${x.ok ? '✅' : '⚠️'} ${esc(x.text)}</div>`).join('')}</div>
       ${c.score < 70 ? `<div class="fix"><b>Improve:</b> ${c.tips.map((t) => '• ' + esc(t)).join(NL)}</div>` : ''}
       ${c.note ? `<p class="mut small">${esc(c.note)}</p>` : ''}</div>`).join('');
-  return `<div class="card"><h2>SEO &amp; Traffic Sources</h2>
-    <p class="mut small">Where can this site's visitors come from, and how well is it set up for each channel? Scores come from evidence found on the site.</p>
-    <div class="grid g2" style="margin:12px 0">
-      <div class="stat"><b>${esc(T.estimate.label)}</b><span>Rough monthly visits, estimated from Tranco popularity rank. Treat as a ballpark, not real analytics.</span></div>
-      <div class="stat"><b>${T.tracking.ok ? '✅ ' + esc(T.tracking.tools.join(', ')) : '❌ No analytics found'}</b><span>Traffic tracking installed</span></div></div>
-    <div class="grid g2">${cards}</div>
-    <p class="mut small" style="margin-top:14px">ℹ️ Exact traffic by source (organic / social / direct / referral) is private data. Connect Google Analytics 4 and Google Search Console to see the real numbers for your own site.</p>
-    <h3>Traffic-related checks</h3>${checkList('Traffic Sources')}</div>`;
+
+  return `<div class="card" style="padding:0;overflow:hidden"><div style="padding:18px 20px 0"><h2>SEO &amp; Traffic overview</h2>
+      <p class="mut small">Estimated from public data and on-site signals. Real visitor numbers come only from Google Analytics / Search Console (your own site) or a paid database such as SE Ranking, Semrush or Similarweb.</p></div>${kpiStrip}</div>
+    ${countries}
+    <div class="card"><h2>Traffic channels: how well is the site set up for each?</h2><p class="mut small">Scores come from evidence found on the site, with a to-do list for every weak channel.</p>
+      <div class="grid g2" style="margin-top:12px">${cards}</div></div>
+    <div class="card"><h3 style="margin-top:0">Traffic-related checks</h3>${checkList('Traffic Sources')}</div>`;
 }
 
 function sitemapPane(d) {

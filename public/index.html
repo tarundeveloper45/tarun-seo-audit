@@ -110,6 +110,15 @@ main{margin-top:-34px}
 @media print{.foot{background:none;color:#444;margin:0;padding:10px 0}.fbtn{background:none;color:#4f46e5;padding:0}#landing{display:none}}
 .prose h2{margin-bottom:8px}.prose p,.prose li{color:var(--mut)}.prose li{margin:6px 0}.prose b{color:var(--ink)}
 details{border-top:1px solid var(--line);padding:10px 0}details:first-of-type{border-top:0}summary{cursor:pointer;font-weight:600}details p{margin:8px 0 0}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);margin-top:14px}
+.kpi{padding:18px 20px;border-right:1px solid var(--line);min-width:0}.kpi:last-child{border-right:0}
+.kpi .kl{font-size:14px;font-weight:600;color:var(--ink)}.kpi .kl i{font-style:normal;color:var(--mut);font-weight:400;cursor:help;margin-left:3px}
+.kpi .big{font-size:34px;font-weight:700;color:var(--info);line-height:1.25;margin-top:4px}.kpi .big small{font-size:16px;color:var(--mut);font-weight:400}
+.kpi .big.sm{font-size:22px;margin-top:8px}.kpi .ku{font-size:13px;color:var(--mut);margin-bottom:8px}
+.kpi .ksep{border-top:1px solid var(--line);margin:12px 0}
+.kpi .krow{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:3px 0;color:var(--mut)}.kpi .krow b{color:var(--ink);text-align:right;font-weight:600}
+@media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}.kpi:nth-child(2){border-right:0}.kpi:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+@media(max-width:520px){.kpis{grid-template-columns:1fr}.kpi{border-right:0;border-bottom:1px solid var(--line)}}
 </style>
 </head>
 <body>

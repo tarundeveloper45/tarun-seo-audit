@@ -125,12 +125,22 @@ function extraMarkdown(R) {
     if (f.get('_honey')) return; // bot
     btn.disabled = true; btn.textContent = 'Sending…'; status.className = 'small'; status.textContent = '';
     try {
-      const r = await fetch('https://formsubmit.co/ajax/' + TO, {
-        method: 'POST', headers: { 'content-type': 'application/json', accept: 'application/json' },
-        body: JSON.stringify({ name, email, phone: f.get('phone') || '-', message, _subject: 'Website contact: ' + f.get('subject') + ' — ' + name, _replyto: email, _template: 'table', _captcha: 'false', page: location.href }),
-      });
-      const j = await r.json().catch(() => ({}));
-      if (!r.ok || String(j.success) === 'false') throw new Error(j.message || 'Request failed');
+      const d = form.dataset;
+      if (d.ejsService && d.ejsTemplate && d.ejsKey) {
+        const r = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+          method: 'POST', headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ service_id: d.ejsService, template_id: d.ejsTemplate, user_id: d.ejsKey,
+            template_params: { name, email, phone: f.get('phone') || '-', subject: f.get('subject'), message, page: location.href, time: new Date().toLocaleString() } }),
+        });
+        if (!r.ok) throw new Error(await r.text());
+      } else {
+        const r = await fetch('https://formsubmit.co/ajax/' + TO, {
+          method: 'POST', headers: { 'content-type': 'application/json', accept: 'application/json' },
+          body: JSON.stringify({ name, email, phone: f.get('phone') || '-', message, _subject: 'Website contact: ' + f.get('subject') + ' — ' + name, _replyto: email, _template: 'table', _captcha: 'false', page: location.href }),
+        });
+        const j = await r.json().catch(() => ({}));
+        if (!r.ok || String(j.success) === 'false') throw new Error(j.message || 'Request failed');
+      }
       form.reset(); status.className = 'small ok'; status.textContent = '✅ Thank you! Your message was sent. I will get back to you soon.';
     } catch (err) {
       status.className = 'small bad'; status.textContent = 'Sorry, the message could not be sent. Please call or WhatsApp +91 98210 12189 instead.';

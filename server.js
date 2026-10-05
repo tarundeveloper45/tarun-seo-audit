@@ -19,8 +19,8 @@ function securityHeaders(req) {
     'permissions-policy': 'camera=(), microphone=(), geolocation=(), payment=()',
     'cross-origin-opener-policy': 'same-origin',
     'content-security-policy': process.env.GA_ID
-      ? "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
-      : "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'",
+      ? "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://formsubmit.co https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
+      : "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://formsubmit.co; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'",
   };
   if ((req.headers['x-forwarded-proto'] || '') === 'https') h['strict-transport-security'] = 'max-age=31536000; includeSubDomains';
   return h;
@@ -67,6 +67,11 @@ const server = http.createServer(async (req, res) => {
     return send(req, res, 200, 'text/plain; charset=utf-8', pages.map((p) => url(p.path)).join(NL) + NL, { 'cache-control': 'public, max-age=3600' });
   }
   if (u.pathname === '/favicon.ico') { u.pathname = '/favicon-32.png'; }
+
+  if (u.pathname === '/contact' && req.method === 'POST') {
+    req.resume();
+    return send(req, res, 200, 'text/html; charset=utf-8', '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Enable JavaScript</title><meta name="robots" content="noindex"></head><body style="font:16px/1.6 system-ui,sans-serif;max-width:560px;margin:12vh auto;padding:0 20px"><h1>Please enable JavaScript</h1><p>The contact form needs JavaScript. You can also call or WhatsApp <a href="tel:+919821012189">+91 98210 12189</a>.</p><p><a href="/contact">Back to contact page</a></p></body></html>', { 'cache-control': 'no-store' });
+  }
 
   // HTML pages (home, tool pages, guides)
   const clean = u.pathname.length > 1 ? u.pathname.replace(/\/+$/, '') : u.pathname;

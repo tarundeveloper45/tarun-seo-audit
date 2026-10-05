@@ -106,3 +106,34 @@ function extraMarkdown(R) {
     '', '## Traffic sources', `- Estimated volume: ${R.traffic.estimate.label}`, ...R.traffic.channels.map((c) => `- ${c.name}: ${c.score}% (${c.level})`),
     '', '## Sitemap', `- ${R.sitemap.total} URLs (${R.sitemap.source})`, ...R.sitemap.issues.map((i) => `- ${i.text}`)];
 }
+
+
+// ---- contact form: emails the message to the site owner via FormSubmit
+(() => {
+  const form = document.getElementById('contactForm');
+  if (!form) return;
+  const status = document.getElementById('cf-status');
+  const btn = document.getElementById('cf-send');
+  const TO = ['tarundeveloper22', 'yahoo.com'].join('@');
+  form.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const f = new FormData(form);
+    const name = (f.get('name') || '').trim(), email = (f.get('email') || '').trim(), message = (f.get('message') || '').trim();
+    status.className = 'small bad';
+    if (!name || !message) { status.textContent = 'Please enter your name and message.'; return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { status.textContent = 'Please enter a valid email address.'; return; }
+    if (f.get('_honey')) return; // bot
+    btn.disabled = true; btn.textContent = 'Sending…'; status.className = 'small'; status.textContent = '';
+    try {
+      const r = await fetch('https://formsubmit.co/ajax/' + TO, {
+        method: 'POST', headers: { 'content-type': 'application/json', accept: 'application/json' },
+        body: JSON.stringify({ name, email, phone: f.get('phone') || '-', message, _subject: 'Website contact: ' + f.get('subject') + ' — ' + name, _replyto: email, _template: 'table', _captcha: 'false', page: location.href }),
+      });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok || String(j.success) === 'false') throw new Error(j.message || 'Request failed');
+      form.reset(); status.className = 'small ok'; status.textContent = '✅ Thank you! Your message was sent. I will get back to you soon.';
+    } catch (err) {
+      status.className = 'small bad'; status.textContent = 'Sorry, the message could not be sent. Please call or WhatsApp +91 98210 12189 instead.';
+    } finally { btn.disabled = false; btn.textContent = 'Send message'; }
+  });
+})();
